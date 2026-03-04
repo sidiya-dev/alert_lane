@@ -40,8 +40,12 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   _buildHeader(),
                   _buildForm(),
-                  _buildThirdPartyLoginWith(),
-                  _buildRegisterLink()
+                  SizedBox(height: 15),
+                  _buildSeperator(),
+                  SizedBox(height: 15),
+                  _buildThirdPartyLogin(),
+                  SizedBox(height: 15),
+                  _buildRegisterLink(),
                 ],
               ),
             ),
@@ -52,7 +56,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildHeader() {
-    return const Center(child: Column(children: [LogoWidget(height: 80,width: 150,)]));
+    return const Center(
+      child: Column(children: [LogoWidget(height: 80, width: 150)]),
+    );
   }
 
   Widget _buildForm() {
@@ -108,71 +114,68 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildThirdPartyLoginWith() {
-    return Padding(
-      padding: const EdgeInsetsGeometry.symmetric(vertical: 20),
-      child: Column(
-        children: [
-          Row(
-            spacing: 10,
-            children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade800,width: .5),
-                  ),
-                ),
-              ),
-              Text(
-                "Or Login With",
-                style: TextTheme.of(
-                  context,
-                ).bodyMedium,
-              ),
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade800,width: .5),
-                  ),
-                ),
-              ),
-            ],
+  Widget _buildSeperator() {
+    return Row(
+      spacing: 10,
+      children: [
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade800, width: .5),
+            ),
           ),
+        ),
+        Text("Or Login With", style: TextTheme.of(context).bodyMedium),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade800, width: .5),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-          SizedBox(height: 15),
-          Row(
-            children: [
-              LoginWithWidget(
-                thirdPartyLogo: Icons.g_mobiledata,
-                thirdPartyName: "Google",
-                onTap: null,
-              ),
-              Spacer(),
-              LoginWithWidget(
-                thirdPartyLogo: Icons.apple,
-                thirdPartyName: "Apple",
-                onTap: null,
-              ),
-            ],
-          ),
-        ],
+  Widget _buildThirdPartyLogin() {
+    return Column(
+      children: [
+        SizedBox(height: 15),
+        Row(
+          children: [
+            LoginWithWidget(
+              thirdPartyLogo: Icons.g_mobiledata,
+              thirdPartyName: "Google",
+              onTap: null,
+            ),
+            Spacer(),
+            LoginWithWidget(
+              thirdPartyLogo: Icons.apple,
+              thirdPartyName: "Apple",
+              onTap: null,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRegisterLink() {
+    return GestureDetector(
+      onTap: () {},
+      child: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(text: "Don't Have an account?"),
+            TextSpan(
+              text: " Sign up",
+              style: TextTheme.of(
+                context,
+              ).bodyLarge!.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
     );
   }
-
-  Widget _buildRegisterLink(){
-    return GestureDetector(
-      onTap: (){},
-      child: Text.rich(TextSpan(children: [
-        TextSpan(
-          text: "Don't Have an account?"
-        ),
-        TextSpan(
-          text: " Sign up",
-          style: TextTheme.of(context).bodyLarge!.copyWith(fontWeight: FontWeight.bold)
-        ),
-      ]))
-    );
-  }
-
 }
