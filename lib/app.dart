@@ -1,4 +1,5 @@
 import 'package:alert_lane/core/theme/app_theme.dart';
+import 'package:alert_lane/dependencies.dart';
 import 'package:alert_lane/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:alert_lane/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AuthBloc(),
+      create: (context) => serviceLocator<AuthBloc>(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
