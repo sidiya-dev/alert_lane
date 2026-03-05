@@ -1,8 +1,11 @@
+import 'package:alert_lane/features/auth/domain/usecases/login_usecase.dart';
+import 'package:alert_lane/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/auth_button.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/auth_field.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/login_with_widget.dart';
 import 'package:alert_lane/widgets/logo_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,44 +17,69 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
-        child: SingleChildScrollView(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Theme.of(context).scaffoldBackgroundColor,
-              boxShadow: [
-                const BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.16),
-                  blurRadius: 4,
-                  spreadRadius: 0,
-                  offset: Offset(0, 1),
-                ),
-              ],
+    return BlocConsumer<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is LoginFailure) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+        }
+        if (state is LoginSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("${state.user.firstName} ${state.user.lastName}"),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(26.0),
-              child: Column(
-                children: [
-                  _buildHeader(),
-                  _buildForm(),
-                  SizedBox(height: 15),
-                  _buildSeperator(),
-                  SizedBox(height: 15),
-                  _buildThirdPartyLogin(),
-                  SizedBox(height: 15),
-                  _buildRegisterLink(),
-                ],
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is Loading) {
+          return Scaffold(
+            body: SafeArea(child: Center(child: CircularProgressIndicator())),
+          );
+        }
+
+        return Scaffold(
+          appBar: AppBar(),
+          body: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 16, 16, 16),
+            child: SingleChildScrollView(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  boxShadow: [
+                    const BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.16),
+                      blurRadius: 4,
+                      spreadRadius: 0,
+                      offset: Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(26.0),
+                  child: Column(
+                    children: [
+                      _buildHeader(),
+                      _buildForm(),
+                      SizedBox(height: 15),
+                      _buildSeperator(),
+                      SizedBox(height: 15),
+                      _buildThirdPartyLogin(),
+                      SizedBox(height: 15),
+                      _buildRegisterLink(),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -63,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildForm() {
     return Form(
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -101,7 +130,19 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(height: 20),
 
           AuthButton(
-            onPressed: () {},
+            onPressed: () {
+              if (!formKey.currentState!.validate()) {
+                return;
+              }
+              context.read<AuthBloc>().add(
+                UserLogin(
+                  params: LoginParams(
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim(),
+                  ),
+                ),
+              );
+            },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
