@@ -1,22 +1,47 @@
 import 'package:flutter/material.dart';
 
-class AuthField extends StatelessWidget {
+class AuthField extends StatefulWidget {
   const AuthField({
     super.key,
     required this.controller,
-    required this.placeholder, required this.validator,
+    required this.placeholder,
+    required this.validator,
+    this.isPassword = false,
   });
   final TextEditingController controller;
   final String placeholder;
   final FormFieldValidator<String>? validator;
+  final bool? isPassword;
 
+  @override
+  State<AuthField> createState() => _AuthFieldState();
+}
+
+class _AuthFieldState extends State<AuthField> {
+  bool isVisible = false;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
+      obscureText: widget.isPassword! && isVisible,
+      validator: widget.validator,
       decoration: InputDecoration(
+        
         contentPadding: EdgeInsets.all(20),
-        hintText: placeholder,
+        hintText: widget.placeholder,
+        suffixIcon: widget.isPassword!
+            ? IconButton(
+                onPressed: () {
+                  setState(() {
+                    isVisible = !isVisible;
+                  });
+                },
+                icon: Icon(
+                  widget.isPassword! && isVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                ),
+              )
+            : null,
       ),
     );
   }
