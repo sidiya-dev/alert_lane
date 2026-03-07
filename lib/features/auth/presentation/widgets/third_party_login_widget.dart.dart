@@ -23,6 +23,7 @@ class LoginWithWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(26),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(thirdPartyLogo),
             SizedBox(width: 5),

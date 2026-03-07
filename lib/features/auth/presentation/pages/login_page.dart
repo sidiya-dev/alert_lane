@@ -2,8 +2,10 @@ import 'package:alert_lane/features/auth/domain/usecases/login_usecase.dart';
 import 'package:alert_lane/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/auth_button.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/auth_field.dart';
-import 'package:alert_lane/features/auth/presentation/widgets/login_with_widget.dart';
-import 'package:alert_lane/widgets/logo_widget.dart';
+import 'package:alert_lane/features/auth/presentation/widgets/third_party_login_widget.dart.dart';
+import 'package:alert_lane/features/auth/presentation/widgets/third_party_widget.dart';
+import 'package:alert_lane/shared/utils/validators.dart';
+import 'package:alert_lane/shared/widgets/logo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -103,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           const SizedBox(height: 10),
           AuthField(
+            validator: Validators.email,
             controller: _emailController,
             placeholder: "name@example.com",
           ),
@@ -125,7 +128,11 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           const SizedBox(height: 2),
-          AuthField(controller: _passwordController, placeholder: "password"),
+          AuthField(
+            validator: Validators.password,
+            controller: _passwordController,
+            placeholder: "password",
+          ),
 
           SizedBox(height: 20),
 
@@ -179,26 +186,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildThirdPartyLogin() {
-    return Column(
-      children: [
-        SizedBox(height: 15),
-        Row(
-          children: [
-            LoginWithWidget(
-              thirdPartyLogo: Icons.g_mobiledata,
-              thirdPartyName: "Google",
-              onTap: null,
-            ),
-            Spacer(),
-            LoginWithWidget(
-              thirdPartyLogo: Icons.apple,
-              thirdPartyName: "Apple",
-              onTap: null,
-            ),
-          ],
-        ),
-      ],
-    );
+    return ThirdPartySection();
   }
 
   Widget _buildRegisterLink() {
