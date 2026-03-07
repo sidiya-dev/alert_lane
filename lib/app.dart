@@ -1,3 +1,4 @@
+import 'package:alert_lane/core/router/app_router.dart';
 import 'package:alert_lane/core/theme/app_theme.dart';
 import 'package:alert_lane/dependencies.dart';
 import 'package:alert_lane/features/auth/presentation/bloc/auth_bloc.dart';
@@ -13,11 +14,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => serviceLocator<AuthBloc>(),
-      child: MaterialApp(
+      child: MaterialApp.router(
+        routerConfig: appRouter,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
-        home: RegisterPage(),
       ),
     );
   }

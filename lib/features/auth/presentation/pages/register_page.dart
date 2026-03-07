@@ -1,3 +1,4 @@
+import 'package:alert_lane/core/router/app_router.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/auth_button.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/auth_field.dart';
 import 'package:alert_lane/features/auth/presentation/widgets/third_party_widget.dart';
@@ -5,6 +6,7 @@ import 'package:alert_lane/shared/utils/validators.dart';
 import 'package:alert_lane/shared/widgets/logo_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -271,7 +273,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _buildLoginLink() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        context.go(AppRoutes.login);
+      },
       child: Text.rich(
         TextSpan(
           children: [
